@@ -5,11 +5,12 @@ import Expense from '../models/Expense';
 
 interface props {
   expense: Expense;
+  onPress : () => void;
 }
 
 const ExpenseCard: React.FC<props> = (props: props) => {
   return (
-    <Card style={styles.root}>
+    <Card style={styles.root} onPress={props.onPress}>
       <Text> Name : {props.expense.name} </Text>
       <Text> Description : {props.expense.des} </Text>
       <Text> Amount : {props.expense.amount} </Text>

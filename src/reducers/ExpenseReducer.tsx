@@ -25,10 +25,16 @@ function expenseReducer(state = initialState, action: ExpenseActionType) {
       exp.push(action.value);
       newState.expenses = exp;
       break;
-    case DELETE_EXPENSE:
+    case DELETE_EXPENSE: 
+      const tmp : Expense[] = [];
+      state.expenses.map(ex => {
+        if (action.value.id != ex.id) {
+          tmp.push(ex);
+        }
+      });
+      newState.expenses = tmp;
       break;
   }
-  console.log(newState);
   return newState;
 }
 

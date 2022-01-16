@@ -1,8 +1,12 @@
 import {Dispatch} from 'redux';
-import storeExpense, {getAllExpenses} from '../../managers/RealmManager';
+import storeExpense, {
+  deleteExpense,
+  getAllExpenses,
+} from '../../managers/RealmManager';
 import Expense from '../../models/Expense';
 import {
   Add_EXPENSE,
+  DELETE_EXPENSE,
   ExpenseActionType,
   INITIALIZE_EXPENSE,
 } from './ExpenseActionsTypes';
@@ -18,7 +22,8 @@ export const initializeExpense =
   };
 
 export const addExpense =
-  (expense: Expense, completion : (success : Boolean) => void) => async (dispatch: Dispatch<ExpenseActionType>) => {
+  (expense: Expense, completion: (success: Boolean) => void) =>
+  async (dispatch: Dispatch<ExpenseActionType>) => {
     storeExpense(expense, success => {
       if (success) {
         dispatch({
@@ -29,5 +34,14 @@ export const addExpense =
       } else {
         completion(false);
       }
+    });
+  };
+
+export const removeExpense =
+  (expense: Expense) => async (dispatch: Dispatch<ExpenseActionType>) => {
+    deleteExpense(expense.id);
+    dispatch({
+      type: DELETE_EXPENSE,
+      value: expense,
     });
   };

@@ -6,6 +6,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Button, TextInput} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
+import { GlobalStyle } from '../GlobalStyle';
 import storeExpense, {getAllExpenses} from '../managers/RealmManager';
 import Expense from '../models/Expense';
 import {addExpense} from '../reducers/actions/ExpenseActions';
@@ -33,9 +34,9 @@ const AddExpenseScreen: React.FC<props> = navigation => {
   return (
     <>
       <View style={styles.root}>
-        <View style={styles.topBar}>
-          <View style={styles.titleBox}>
-            <Text style={styles.title}>Expense</Text>
+        <View style={GlobalStyle.topBar}>
+          <View style={GlobalStyle.titleBox}>
+            <Text style={GlobalStyle.title}>Expense</Text>
           </View>
           <TouchableOpacity
             onPress={() => {
@@ -112,25 +113,6 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: '#FD3C4A',
     flex: 1,
-  },
-  topBar: {
-    flexDirection: 'row',
-    height: 64,
-    padding: 16,
-    alignItems: 'center',
-  },
-  titleBox: {
-    marginStart: 16,
-    width: '100%',
-    position: 'absolute',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: 'white',
   },
   detailsParent: {
     flex: 1,

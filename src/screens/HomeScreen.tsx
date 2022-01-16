@@ -5,7 +5,7 @@ import {FAB} from 'react-native-paper';
 
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from './MainScreen';
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ExpenseCard from '../components/ExpenseCard';
 import {rootReducerType} from '../reducers/Store';
@@ -24,15 +24,23 @@ const HomeScreen: React.FC<props> = navigation => {
 
   useEffect(() => {
     dispatch(initializeExpense());
-  }, [])
-
+  }, []);
 
   return (
     <View style={{flex: 1}}>
       <FlatList
         data={expenses}
         renderItem={item => {
-          return <ExpenseCard expense={item.item} />;
+          return (
+            <ExpenseCard
+              expense={item.item}
+              onPress={() => {
+                navigation.navigation.navigate('Detail_Screen', {
+                  expense: item.item,
+                });
+              }}
+            />
+          );
         }}
         keyExtractor={item => item.id}
       />

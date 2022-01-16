@@ -9,10 +9,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons';
 import HomeScreen from './HomeScreen';
 import AddExpenseScreen from './AddExpenseScreen';
 import ProfileScreen from './ProfileScreen';
+import DetailsScreen from './DetailsScreen';
+import Expense from '../models/Expense';
 
 export type RootStackParamList = {
   HomeTab: undefined;
   Add_Expense: undefined;
+  Detail_Screen: {expense: Expense};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -29,6 +32,7 @@ const MainScreen = () => {
         }}>
         <Stack.Screen name="HomeTab" component={HomeTab} />
         <Stack.Screen name="Add_Expense" component={AddExpenseScreen} />
+        <Stack.Screen name="Detail_Screen" component={DetailsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
