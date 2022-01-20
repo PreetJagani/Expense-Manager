@@ -87,11 +87,13 @@ export function purge() {
 export function updateExpense(expense: Expense) {
   withExpenseRealm(realm => {
     try {
-      realm.create(
-        EXPENSE_DB_NAME,
-        expense.toRealmExpense,
-        Realm.UpdateMode.Modified,
-      );
+      realm.write(() => {
+        realm.create(
+          EXPENSE_DB_NAME,
+          expense.toRealmExpense(),
+          Realm.UpdateMode.Modified,
+        );
+      });
     } catch (e) {
       console.log(e);
     } finally {

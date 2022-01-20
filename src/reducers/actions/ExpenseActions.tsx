@@ -3,12 +3,15 @@ import storeExpense, {
   deleteExpense,
   getAllExpenses,
 } from '../../managers/RealmManager';
+
+import * as RealmManager from '../../managers/RealmManager';
 import Expense from '../../models/Expense';
 import {
   Add_EXPENSE,
   DELETE_EXPENSE,
   ExpenseActionType,
   INITIALIZE_EXPENSE,
+  UPDATE_EXPENSE,
 } from './ExpenseActionsTypes';
 
 export const initializeExpense =
@@ -44,4 +47,14 @@ export const removeExpense =
       type: DELETE_EXPENSE,
       value: expense,
     });
+  };
+
+export const updateExpense =
+  (expense: Expense) => async (dispatch: Dispatch<ExpenseActionType>) => {
+    dispatch({
+      type: UPDATE_EXPENSE,
+      value: expense,
+    });
+    // storeExpense(expense)
+    RealmManager.updateExpense(expense);
   };

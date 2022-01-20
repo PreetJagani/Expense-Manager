@@ -8,14 +8,21 @@ import {Button, Card} from 'react-native-paper';
 import {RootStackParamList} from './MainScreen';
 import {Image} from 'react-native';
 import Expense from '../models/Expense';
-import { removeExpense } from '../reducers/actions/ExpenseActions';
-import { useDispatch } from 'react-redux';
+import {removeExpense} from '../reducers/actions/ExpenseActions';
+import {useDispatch} from 'react-redux';
 
 type props = NativeStackScreenProps<RootStackParamList, 'Detail_Screen'>;
 
-const DetailsScreen: React.FC<props> = (navigation, expense) => {
-  const exp = navigation.route.params.expense;
+const DetailsScreen: React.FC<props> = props => {
+  const navigation = props.navigation;
+  const route = props.route;
+  const exp = route.params.expense;
   const dispatch = useDispatch();
+
+  const didPressEditButton = () => {
+    navigation.navigate('Add_Expense', {expense: exp});
+  };
+
   return (
     <>
       <View style={{backgroundColor: '#FD3C4A', marginBottom: 48}}>
@@ -25,7 +32,7 @@ const DetailsScreen: React.FC<props> = (navigation, expense) => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigation.goBack();
+              navigation.goBack();
             }}>
             <MaterialCommunityIcons
               name="keyboard-backspace"
@@ -36,8 +43,8 @@ const DetailsScreen: React.FC<props> = (navigation, expense) => {
           <View style={{flex: 1}}></View>
           <TouchableOpacity
             onPress={() => {
-                dispatch(removeExpense(exp));
-                navigation.navigation.goBack();
+              dispatch(removeExpense(exp));
+              navigation.goBack();
             }}>
             <MaterialCommunityIcons name="delete" size={28} color={'white'} />
           </TouchableOpacity>
@@ -72,7 +79,7 @@ const DetailsScreen: React.FC<props> = (navigation, expense) => {
           style={{height: 200, borderRadius: 20, marginTop: 8}}
         />
         <View style={{flex: 1}} />
-        <Button mode="contained">Edit</Button>
+        <Button mode="contained" onPress={didPressEditButton}>Edit</Button>
       </View>
     </>
   );

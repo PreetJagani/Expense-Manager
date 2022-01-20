@@ -1,34 +1,45 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Button, TextInput} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
-import { GlobalStyle } from '../GlobalStyle';
+import {GlobalStyle} from '../GlobalStyle';
 import storeExpense, {getAllExpenses} from '../managers/RealmManager';
 import Expense from '../models/Expense';
-import {addExpense} from '../reducers/actions/ExpenseActions';
+import {addExpense, updateExpense} from '../reducers/actions/ExpenseActions';
 import {RootStackParamList} from './MainScreen';
 
 type props = NativeStackScreenProps<RootStackParamList, 'Add_Expense'>;
 
-const AddExpenseScreen: React.FC<props> = navigation => {
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState(0);
-  const [name, setName] = useState('');
+const AddExpenseScreen: React.FC<props> = props => {
+  const navigation = props.navigation;
+  const expense = props.route.params?.expense;
+
+  const [description, setDescription] = useState(expense ? expense.des : '');
+  const [amount, setAmount] = useState(expense ? expense.amount : 0);
+  const [name, setName] = useState(expense ? expense.name : '');
 
   const dispatch = useDispatch();
 
   function didPressContinueButton() {
-    dispatch(
-      addExpense(new Expense(name, amount, description), success => {
-        if (success) {
-          navigation.navigation.goBack();
-        }
-      }),
-    );
+    if (expense) {
+      const exp = new Expense(name, amount, description);
+      exp.id = expense.id;
+      dispatch(updateExpense(exp));
+      navigation.goBack();
+      navigation.goBack();
+    } else {
+      dispatch(
+        addExpense(new Expense(name, amount, description), success => {
+          if (success) {
+            navigation.goBack();
+          }
+        }),
+      );
+    }
   }
 
   return (
@@ -40,7 +51,7 @@ const AddExpenseScreen: React.FC<props> = navigation => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigation.goBack();
+              navigation.goBack();
             }}>
             <MaterialCommunityIcons
               name="keyboard-backspace"
@@ -56,6 +67,7 @@ const AddExpenseScreen: React.FC<props> = navigation => {
               style={styles.detailsBoxItem}
               mode="outlined"
               label={'Name'}
+              defaultValue={name}
               onChangeText={text => setName(text)}
             />
             <TextInput
@@ -68,13 +80,14 @@ const AddExpenseScreen: React.FC<props> = navigation => {
               mode="outlined"
               label={'Description'}
               onChangeText={text => setDescription(text)}
+              defaultValue={description}
             />
 
             <Button
               style={{...styles.detailsBoxItem, marginVertical: 8}}
               mode="contained"
               onPress={didPressContinueButton}>
-              Continue
+              {expense ? 'Save' : 'Continue'}
             </Button>
           </View>
 
@@ -88,6 +101,7 @@ const AddExpenseScreen: React.FC<props> = navigation => {
             autoFocus={true}
             keyboardType="number-pad"
             left={<TextInput.Affix text="Rs. " textStyle={{color: 'white'}} />}
+            defaultValue={String(amount)}
             onChangeText={text => setAmount(Number(text))}
           />
 
