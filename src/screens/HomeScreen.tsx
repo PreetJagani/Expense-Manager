@@ -3,24 +3,38 @@ import {View, Text, StyleSheet, FlatList} from 'react-native';
 
 import {FAB} from 'react-native-paper';
 
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from './MainScreen';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import {HomeStackParams} from './MainScreen';
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ExpenseCard from '../components/ExpenseCard';
 import {rootReducerType} from '../reducers/Store';
 import {initializeExpense} from '../reducers/actions/ExpenseActions';
+import Expense from '../models/Expense';
 
-interface props {
-  navigation: NativeStackNavigationProp<RootStackParamList>;
-}
+type props = NativeStackScreenProps<HomeStackParams, 'HomeTab'>;
 
-const HomeScreen: React.FC<props> = navigation => {
+const HomeScreen: React.FC<props> = props => {
   const expenses = useSelector(
     (state: rootReducerType) => state.expense.expenses,
   );
 
+  const navigation = props.navigation;
+
   const dispatch = useDispatch();
+
+  const didPressExpenseItem = (expense: Expense) => {
+    navigation.navigate('Detail_Screen', {
+      expense: expense,
+    });
+  };
+
+  const didPressFAB = () => {
+    navigation.navigate('Add_Expense');
+  };
 
   useEffect(() => {
     dispatch(initializeExpense());
@@ -35,22 +49,14 @@ const HomeScreen: React.FC<props> = navigation => {
             <ExpenseCard
               expense={item.item}
               onPress={() => {
-                navigation.navigation.navigate('Detail_Screen', {
-                  expense: item.item,
-                });
+                didPressExpenseItem(item.item);
               }}
             />
           );
         }}
         keyExtractor={item => item.id}
       />
-      <FAB
-        style={styles.fab}
-        icon="plus"
-        onPress={() => {
-          navigation.navigation.navigate('Add_Expense');
-        }}
-      />
+      <FAB style={styles.fab} icon="plus" onPress={didPressFAB} />
     </View>
   );
 };

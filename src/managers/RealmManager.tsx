@@ -9,10 +9,11 @@ import Expense, {
 } from '../models/Expense';
 
 const REALM_DB_PATH: string = 'expenseDB';
+const defaultCompletionBlock = () => {};
 
-function storeExpense(
+export function storeExpense(
   expense: Expense,
-  completionBlock: (success: Boolean) => any = () => {},
+  completionBlock: (success: Boolean) => any = defaultCompletionBlock,
 ) {
   withExpenseRealm(realm => {
     try {
@@ -52,7 +53,10 @@ export function getAllExpenses(
   });
 }
 
-export function deleteExpense(expenseId: string) {
+export function deleteExpense(
+  expenseId: string,
+  completionBlock: (success: Boolean) => any = defaultCompletionBlock,
+) {
   withExpenseRealm(realm => {
     try {
       realm.write(() => {
@@ -63,12 +67,15 @@ export function deleteExpense(expenseId: string) {
         realm.delete(realmObject);
       });
     } catch (e) {
+      completionBlock(false);
       console.log(e);
     } finally {
       realm.close();
     }
   });
 }
+
+//todo delete batch, add in batch
 
 export function purge() {
   withExpenseRealm(realm => {
@@ -84,7 +91,10 @@ export function purge() {
   });
 }
 
-export function updateExpense(expense: Expense) {
+export function updateExpense(
+  expense: Expense,
+  completionBlock: (success: Boolean) => any = defaultCompletionBlock,
+) {
   withExpenseRealm(realm => {
     try {
       realm.write(() => {
@@ -93,8 +103,10 @@ export function updateExpense(expense: Expense) {
           expense.toRealmExpense(),
           Realm.UpdateMode.Modified,
         );
+        completionBlock(true);
       });
     } catch (e) {
+      completionBlock(false);
       console.log(e);
     } finally {
       realm.close();

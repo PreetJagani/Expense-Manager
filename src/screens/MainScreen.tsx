@@ -12,13 +12,13 @@ import ProfileScreen from './ProfileScreen';
 import DetailsScreen from './DetailsScreen';
 import Expense from '../models/Expense';
 
-export type RootStackParamList = {
+export type HomeStackParams = {
   HomeTab: undefined;
   Add_Expense: undefined | {expense: Expense};
   Detail_Screen: {expense: Expense};
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<HomeStackParams>();
 const Tab = createMaterialBottomTabNavigator();
 
 const MainScreen = () => {

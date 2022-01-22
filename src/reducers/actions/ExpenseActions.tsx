@@ -1,8 +1,4 @@
 import {Dispatch} from 'redux';
-import storeExpense, {
-  deleteExpense,
-  getAllExpenses,
-} from '../../managers/RealmManager';
 
 import * as RealmManager from '../../managers/RealmManager';
 import Expense from '../../models/Expense';
@@ -16,7 +12,7 @@ import {
 
 export const initializeExpense =
   () => async (dispatch: Dispatch<ExpenseActionType>) => {
-    getAllExpenses((expenses: Expense[]) => {
+    RealmManager.getAllExpenses((expenses: Expense[]) => {
       dispatch({
         type: INITIALIZE_EXPENSE,
         value: expenses,
@@ -25,36 +21,49 @@ export const initializeExpense =
   };
 
 export const addExpense =
-  (expense: Expense, completion: (success: Boolean) => void) =>
-  async (dispatch: Dispatch<ExpenseActionType>) => {
-    storeExpense(expense, success => {
-      if (success) {
+  (expense: Expense) => async (dispatch: Dispatch<ExpenseActionType>) => {
+    dispatch({
+      type: Add_EXPENSE,
+      value: expense,
+    });
+    RealmManager.storeExpense(expense, success => {
+      if (!success) {
         dispatch({
-          type: Add_EXPENSE,
+          type: DELETE_EXPENSE,
           value: expense,
         });
-        completion(true);
-      } else {
-        completion(false);
       }
     });
   };
 
-export const removeExpense =
+export const deleteExpense =
   (expense: Expense) => async (dispatch: Dispatch<ExpenseActionType>) => {
-    deleteExpense(expense.id);
     dispatch({
       type: DELETE_EXPENSE,
       value: expense,
     });
+    RealmManager.deleteExpense(expense.id, success => {
+      if(!success) {
+        dispatch({
+          type: Add_EXPENSE,
+          value: expense,
+        });
+      }
+    });
   };
 
 export const updateExpense =
-  (expense: Expense) => async (dispatch: Dispatch<ExpenseActionType>) => {
+  (oldExpense: Expense, newExpense : Expense) => (dispatch : Dispatch) => {
     dispatch({
       type: UPDATE_EXPENSE,
-      value: expense,
+      value: newExpense,
     });
-    // storeExpense(expense)
-    RealmManager.updateExpense(expense);
+    RealmManager.updateExpense(newExpense, success => {
+      if (!success) {
+        dispatch({
+          type: UPDATE_EXPENSE,
+          value: oldExpense,
+        }); 
+      }
+    });
   };

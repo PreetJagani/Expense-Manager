@@ -5,13 +5,13 @@ import {GlobalStyle} from '../GlobalStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Button, Card} from 'react-native-paper';
-import {RootStackParamList} from './MainScreen';
+import {HomeStackParams} from './MainScreen';
 import {Image} from 'react-native';
 import Expense from '../models/Expense';
-import {removeExpense} from '../reducers/actions/ExpenseActions';
+import {deleteExpense} from '../reducers/actions/ExpenseActions';
 import {useDispatch} from 'react-redux';
 
-type props = NativeStackScreenProps<RootStackParamList, 'Detail_Screen'>;
+type props = NativeStackScreenProps<HomeStackParams, 'Detail_Screen'>;
 
 const DetailsScreen: React.FC<props> = props => {
   const navigation = props.navigation;
@@ -43,7 +43,7 @@ const DetailsScreen: React.FC<props> = props => {
           <View style={{flex: 1}}></View>
           <TouchableOpacity
             onPress={() => {
-              dispatch(removeExpense(exp));
+              dispatch(deleteExpense(exp));
               navigation.goBack();
             }}>
             <MaterialCommunityIcons name="delete" size={28} color={'white'} />

@@ -10,9 +10,9 @@ import {GlobalStyle} from '../GlobalStyle';
 import storeExpense, {getAllExpenses} from '../managers/RealmManager';
 import Expense from '../models/Expense';
 import {addExpense, updateExpense} from '../reducers/actions/ExpenseActions';
-import {RootStackParamList} from './MainScreen';
+import {HomeStackParams} from './MainScreen';
 
-type props = NativeStackScreenProps<RootStackParamList, 'Add_Expense'>;
+type props = NativeStackScreenProps<HomeStackParams, 'Add_Expense'>;
 
 const AddExpenseScreen: React.FC<props> = props => {
   const navigation = props.navigation;
@@ -26,20 +26,14 @@ const AddExpenseScreen: React.FC<props> = props => {
 
   function didPressContinueButton() {
     if (expense) {
-      const exp = new Expense(name, amount, description);
-      exp.id = expense.id;
-      dispatch(updateExpense(exp));
-      navigation.goBack();
+      const newExpense = new Expense(name, amount, description);
+      newExpense.id = expense.id;
+      dispatch(updateExpense(expense, newExpense));
       navigation.goBack();
     } else {
-      dispatch(
-        addExpense(new Expense(name, amount, description), success => {
-          if (success) {
-            navigation.goBack();
-          }
-        }),
-      );
+      dispatch(addExpense(new Expense(name, amount, description)));
     }
+    navigation.goBack();
   }
 
   return (
