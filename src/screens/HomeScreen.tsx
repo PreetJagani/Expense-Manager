@@ -54,7 +54,7 @@ const HomeScreen: React.FC<props> = props => {
 
   return (
     <View style={{flex: 1}}>
-      <View style={{flexDirection: 'row'}}>
+      <View style={styles.chipsBox}>
         <Chip mode="flat" selected={timeTag == EXPENSE_TODAY} onPress={() => setTimeTag(EXPENSE_TODAY)}>Today</Chip>
         <Chip mode="flat" selected={timeTag == EXPENSE_WEEK} onPress={()=> setTimeTag(EXPENSE_WEEK)}>Week</Chip>
         <Chip mode="flat" selected={timeTag == EXPENSE_MONTH} onPress={()=> setTimeTag(EXPENSE_MONTH)}>Month</Chip>
@@ -88,4 +88,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
+  chipsBox : {
+    flexDirection : 'row',
+    justifyContent : 'space-evenly',
+    marginVertical : 8,
+  }
 });
