@@ -7,7 +7,7 @@ export const recurring_bill = 'recurring_bill';
 export const shopping_bag = 'shopping_bag';
 export const restaurant = 'restaurant';
 
-type svgNames = typeof recurring_bill | typeof shopping_bag | typeof restaurant;
+export type svgNames = typeof recurring_bill | typeof shopping_bag | typeof restaurant;
 
 type prop = {
   name: svgNames;

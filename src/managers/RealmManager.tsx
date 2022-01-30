@@ -191,7 +191,6 @@ function getFilterForGreater(field: string, value: number) {
 }
 
 function getFilterForRange(field: string, start: number, end: number) {
-  console.log(`start : ${start} end : ${end}`);
   return `${field} > ${start} AND ${field} < ${end}`;
 }
 

@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-  chipsBox : {
+    chipsBox : {
     flexDirection : 'row',
     justifyContent : 'space-evenly',
     marginVertical : 8,
