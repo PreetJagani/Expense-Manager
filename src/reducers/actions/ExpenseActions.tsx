@@ -20,6 +20,16 @@ export const initializeExpense =
     });
   };
 
+  export const getExpenseForTag =
+  (tag : RealmManager.EXPENSE_TAG_TYPE) => async (dispatch: Dispatch<ExpenseActionType>) => {
+    RealmManager.getAllExpensesForTag(tag, (expenses: Expense[]) => {
+      dispatch({
+        type: INITIALIZE_EXPENSE,
+        value: expenses,
+      });
+    });
+  };
+
 export const addExpense =
   (expense: Expense) => async (dispatch: Dispatch<ExpenseActionType>) => {
     dispatch({

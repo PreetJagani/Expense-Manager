@@ -1,8 +1,11 @@
+// todo change expense to transaction
+
 export interface RealmExpense {
   id: string;
   name: string;
   des: string;
   amount: number;
+  date : number;
 }
 
 export const EXPENSE_DB_NAME: string = 'Expense';
@@ -12,12 +15,14 @@ export default class Expense implements RealmExpense {
   amount: number;
   des: string;
   id: string;
+  date : number;
 
-  constructor(name: string, amount: number, des: string) {
+  constructor(name: string, amount: number, des: string, date : number) {
     this.name = name;
     this.amount = amount;
     this.des = des;
     this.id = Math.random().toString();
+    this.date = date;
   }
 
   toRealmExpense() {
@@ -26,6 +31,7 @@ export default class Expense implements RealmExpense {
       name: this.name,
       des: this.des,
       amount: this.amount,
+      date : this.date,
     };
     return ret;
   }
@@ -36,6 +42,7 @@ export function realmExpenseToExpense(expenseData: RealmExpense): Expense {
     expenseData.name,
     expenseData.amount,
     expenseData.des,
+    expenseData.date,
   );
   expense.id = expenseData.id;
   return expense;
@@ -58,6 +65,7 @@ export const RealmExpenseSchema = {
     name: 'string',
     des: 'string?',
     amount: 'int?',
+    date : 'int',
   },
   primaryKey: 'id',
 };

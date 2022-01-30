@@ -26,12 +26,12 @@ const AddExpenseScreen: React.FC<props> = props => {
 
   function didPressContinueButton() {
     if (expense) {
-      const newExpense = new Expense(name, amount, description);
+      const newExpense = new Expense(name, amount, description, expense.date);
       newExpense.id = expense.id;
       dispatch(updateExpense(expense, newExpense));
       navigation.goBack();
     } else {
-      dispatch(addExpense(new Expense(name, amount, description)));
+      dispatch(addExpense(new Expense(name, amount, description, Date.now())));
     }
     navigation.goBack();
   }
