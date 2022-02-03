@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import {View, Text, StyleSheet, FlatList, ListRenderItemInfo} from 'react-native';
 
 import {Chip, FAB } from 'react-native-paper';
 
@@ -38,6 +38,17 @@ const HomeScreen: React.FC<props> = props => {
 
   const [timeTag, setTimeTag] = useState<EXPENSE_TAG_TYPE>(EXPENSE_TODAY);
 
+  const renderItem = useCallback((item : ListRenderItemInfo<Expense>) => {
+    return (
+      <ExpenseCard
+        expense={item.item}
+        onPress={() => {
+          didPressExpenseItem(item.item);
+        }}
+      />
+    );
+  }, [timeTag]);
+
   const didPressExpenseItem = (expense: Expense) => {
     navigation.navigate('Detail_Screen', {
       expense: expense,
@@ -62,16 +73,7 @@ const HomeScreen: React.FC<props> = props => {
       </View>
       <FlatList
         data={expenses}
-        renderItem={item => {
-          return (
-            <ExpenseCard
-              expense={item.item}
-              onPress={() => {
-                didPressExpenseItem(item.item);
-              }}
-            />
-          );
-        }}
+        renderItem={renderItem}
         keyExtractor={item => item.id}
       />
       <FAB style={styles.fab} icon="plus" onPress={didPressFAB} />
