@@ -1,18 +1,14 @@
-import React, { useCallback, useState } from 'react';
-import {View, Text, StyleSheet, FlatList, ListRenderItemInfo} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FlatList, ListRenderItemInfo, StyleSheet, View} from 'react-native';
 
-import {Chip, FAB } from 'react-native-paper';
+import {Chip, FAB} from 'react-native-paper';
 
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {HomeStackParams} from './MainScreen';
-import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ExpenseCard from '../components/ExpenseCard';
 import {rootReducerType} from '../reducers/Store';
-import {getExpenseForTag, initializeExpense} from '../reducers/actions/ExpenseActions';
+import {getExpenseForTag} from '../reducers/actions/ExpenseActions';
 import Expense from '../models/Expense';
 import {
   EXPENSE_MONTH,
@@ -20,9 +16,6 @@ import {
   EXPENSE_TODAY,
   EXPENSE_WEEK,
   EXPENSE_YEAR,
-  getAllExpensesForTag,
-  purge,
-  storeDummyExpense,
 } from '../managers/RealmManager';
 
 type props = NativeStackScreenProps<HomeStackParams, 'HomeTab'>;
@@ -38,16 +31,19 @@ const HomeScreen: React.FC<props> = props => {
 
   const [timeTag, setTimeTag] = useState<EXPENSE_TAG_TYPE>(EXPENSE_TODAY);
 
-  const renderItem = useCallback((item : ListRenderItemInfo<Expense>) => {
-    return (
-      <ExpenseCard
-        expense={item.item}
-        onPress={() => {
-          didPressExpenseItem(item.item);
-        }}
-      />
-    );
-  }, [timeTag]);
+  const renderItem = useCallback(
+    (item: ListRenderItemInfo<Expense>) => {
+      return (
+        <ExpenseCard
+          expense={item.item}
+          onPress={() => {
+            didPressExpenseItem(item.item);
+          }}
+        />
+      );
+    },
+    [timeTag],
+  );
 
   const didPressExpenseItem = (expense: Expense) => {
     navigation.navigate('Detail_Screen', {
@@ -66,10 +62,30 @@ const HomeScreen: React.FC<props> = props => {
   return (
     <View style={{flex: 1}}>
       <View style={styles.chipsBox}>
-        <Chip mode="flat" selected={timeTag == EXPENSE_TODAY} onPress={() => setTimeTag(EXPENSE_TODAY)}>Today</Chip>
-        <Chip mode="flat" selected={timeTag == EXPENSE_WEEK} onPress={()=> setTimeTag(EXPENSE_WEEK)}>Week</Chip>
-        <Chip mode="flat" selected={timeTag == EXPENSE_MONTH} onPress={()=> setTimeTag(EXPENSE_MONTH)}>Month</Chip>
-        <Chip mode="flat" selected={timeTag == EXPENSE_YEAR} onPress={()=> setTimeTag(EXPENSE_YEAR)}>Year</Chip>
+        <Chip
+          mode="flat"
+          selected={timeTag == EXPENSE_TODAY}
+          onPress={() => setTimeTag(EXPENSE_TODAY)}>
+          Today
+        </Chip>
+        <Chip
+          mode="flat"
+          selected={timeTag == EXPENSE_WEEK}
+          onPress={() => setTimeTag(EXPENSE_WEEK)}>
+          Week
+        </Chip>
+        <Chip
+          mode="flat"
+          selected={timeTag == EXPENSE_MONTH}
+          onPress={() => setTimeTag(EXPENSE_MONTH)}>
+          Month
+        </Chip>
+        <Chip
+          mode="flat"
+          selected={timeTag == EXPENSE_YEAR}
+          onPress={() => setTimeTag(EXPENSE_YEAR)}>
+          Year
+        </Chip>
       </View>
       <FlatList
         data={expenses}
@@ -90,9 +106,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
   },
-    chipsBox : {
-    flexDirection : 'row',
-    justifyContent : 'space-evenly',
-    marginVertical : 8,
-  }
+  chipsBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    marginVertical: 8,
+  },
 });

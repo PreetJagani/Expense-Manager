@@ -5,7 +5,7 @@ export interface RealmExpense {
   name: string;
   des: string;
   amount: number;
-  date : number;
+  date: number;
 }
 
 export const EXPENSE_DB_NAME: string = 'Expense';
@@ -15,9 +15,9 @@ export default class Expense implements RealmExpense {
   amount: number;
   des: string;
   id: string;
-  date : number;
+  date: number;
 
-  constructor(name: string, amount: number, des: string, date : number) {
+  constructor(name: string, amount: number, des: string, date: number) {
     this.name = name;
     this.amount = amount;
     this.des = des;
@@ -31,7 +31,7 @@ export default class Expense implements RealmExpense {
       name: this.name,
       des: this.des,
       amount: this.amount,
-      date : this.date,
+      date: this.date,
     };
     return ret;
   }
@@ -65,7 +65,7 @@ export const RealmExpenseSchema = {
     name: 'string',
     des: 'string?',
     amount: 'int?',
-    date : 'int',
+    date: 'int',
   },
   primaryKey: 'id',
 };

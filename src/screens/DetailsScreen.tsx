@@ -1,13 +1,11 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {GlobalStyle} from '../GlobalStyle';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Button, Card} from 'react-native-paper';
 import {HomeStackParams} from './MainScreen';
-import {Image} from 'react-native';
-import Expense from '../models/Expense';
 import {deleteExpense} from '../reducers/actions/ExpenseActions';
 import {useDispatch} from 'react-redux';
 
@@ -40,7 +38,7 @@ const DetailsScreen: React.FC<props> = props => {
               color={'white'}
             />
           </TouchableOpacity>
-          <View style={{flex: 1}}></View>
+          <View style={{flex: 1}} />
           <TouchableOpacity
             onPress={() => {
               dispatch(deleteExpense(exp));
@@ -79,7 +77,9 @@ const DetailsScreen: React.FC<props> = props => {
           style={{height: 200, borderRadius: 20, marginTop: 8}}
         />
         <View style={{flex: 1}} />
-        <Button mode="contained" onPress={didPressEditButton}>Edit</Button>
+        <Button mode="contained" onPress={didPressEditButton}>
+          Edit
+        </Button>
       </View>
     </>
   );

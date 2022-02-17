@@ -1,11 +1,8 @@
-import {types} from '@babel/core';
-import React from 'react';
-import {View, Text} from 'react-native';
 import Realm from 'realm';
 import Expense, {
-  RealmExpenseSchema,
   EXPENSE_DB_NAME,
   RealmExpense,
+  RealmExpenseSchema,
   realmExpenseToExpense,
 } from '../models/Expense';
 
@@ -165,7 +162,8 @@ function getFilterForTag(tag: EXPENSE_TAG_TYPE) {
       // assuming start of day is monday :)
       return getFilterForRange(
         'date',
-        date.valueOf() - (date.getDay() == 0 ? 6 : (date.getDay() - 1)) * 24 * 60 * 60 * 1000,
+        date.valueOf() -
+          (date.getDay() == 0 ? 6 : date.getDay() - 1) * 24 * 60 * 60 * 1000,
         curr.valueOf(),
       );
     }

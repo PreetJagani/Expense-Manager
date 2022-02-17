@@ -1,13 +1,12 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import * as React from 'react';
-import {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {useState} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Button, TextInput} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
 import {GlobalStyle} from '../GlobalStyle';
-import storeExpense, {getAllExpenses} from '../managers/RealmManager';
 import Expense from '../models/Expense';
 import {addExpense, updateExpense} from '../reducers/actions/ExpenseActions';
 import {HomeStackParams} from './MainScreen';

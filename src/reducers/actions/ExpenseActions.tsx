@@ -20,8 +20,9 @@ export const initializeExpense =
     });
   };
 
-  export const getExpenseForTag =
-  (tag : RealmManager.EXPENSE_TAG_TYPE) => async (dispatch: Dispatch<ExpenseActionType>) => {
+export const getExpenseForTag =
+  (tag: RealmManager.EXPENSE_TAG_TYPE) =>
+  async (dispatch: Dispatch<ExpenseActionType>) => {
     RealmManager.getAllExpensesForTag(tag, (expenses: Expense[]) => {
       dispatch({
         type: INITIALIZE_EXPENSE,
@@ -53,7 +54,7 @@ export const deleteExpense =
       value: expense,
     });
     RealmManager.deleteExpense(expense.id, success => {
-      if(!success) {
+      if (!success) {
         dispatch({
           type: Add_EXPENSE,
           value: expense,
@@ -63,7 +64,7 @@ export const deleteExpense =
   };
 
 export const updateExpense =
-  (oldExpense: Expense, newExpense : Expense) => (dispatch : Dispatch) => {
+  (oldExpense: Expense, newExpense: Expense) => (dispatch: Dispatch) => {
     dispatch({
       type: UPDATE_EXPENSE,
       value: newExpense,
@@ -73,7 +74,7 @@ export const updateExpense =
         dispatch({
           type: UPDATE_EXPENSE,
           value: oldExpense,
-        }); 
+        });
       }
     });
   };
