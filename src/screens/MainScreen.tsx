@@ -11,11 +11,13 @@ import AddExpenseScreen from './AddExpenseScreen';
 import ProfileScreen from './ProfileScreen';
 import DetailsScreen from './DetailsScreen';
 import Expense from '../models/Expense';
+import CategoriesScreen from "./CategoriesScreen";
 
 export type HomeStackParams = {
   HomeTab: undefined;
   Add_Expense: undefined | {expense: Expense};
   Detail_Screen: {expense: Expense};
+  Categories_Screen: undefined;
 };
 
 const Stack = createStackNavigator<HomeStackParams>();
@@ -33,6 +35,7 @@ const MainScreen = () => {
         <Stack.Screen name="HomeTab" component={HomeTab} />
         <Stack.Screen name="Add_Expense" component={AddExpenseScreen} />
         <Stack.Screen name="Detail_Screen" component={DetailsScreen} />
+        <Stack.Screen name="Categories_Screen" component={CategoriesScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
