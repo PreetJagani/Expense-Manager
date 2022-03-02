@@ -9,9 +9,11 @@ import SvgComponent, {
   svgNames,
 } from '../assets/svgs/SvgComponent';
 import {format} from 'date-fns';
+import Animated, { FadeOut, Layout, SlideInDown, SlideInUp } from "react-native-reanimated";
 
 interface props {
   expense: Expense;
+  index: number;
   onPress: () => void;
 }
 
@@ -19,26 +21,30 @@ const ExpenseCard: React.FC<props> = (props: props) => {
   const expense = props.expense;
 
   return (
-    <Card style={styles.root} onPress={props.onPress}>
-      <View style={{flex: 1, flexDirection: 'row'}}>
-        <Avatar name={getRandomImage()} />
-
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            marginLeft: 8,
-          }}>
-          <Text style={styles.title}> {expense.name} </Text>
-          <Text style={styles.description}> {expense.des} </Text>
+    <Animated.View
+      entering={SlideInDown.delay(props.index * 100)}
+      layout={Layout.springify()}
+      exiting={FadeOut.delay(props.index * 1000)}>
+      <Card style={styles.root} onPress={props.onPress}>
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Avatar name={getRandomImage()} />
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+              marginLeft: 8,
+            }}>
+            <Text style={styles.title}> {expense.name} </Text>
+            <Text style={styles.description}> {expense.des} </Text>
+          </View>
+          <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+            <Text style={styles.amount}> {`-${expense.amount} Rs.`} </Text>
+            <Text style={styles.date}> {format(expense.date, 'hh:mm a')} </Text>
+          </View>
         </View>
-        <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
-          <Text style={styles.amount}> {`-${expense.amount} Rs.`} </Text>
-          <Text style={styles.date}> {format(expense.date, 'hh:mm a')} </Text>
-        </View>
-      </View>
-    </Card>
+      </Card>
+    </Animated.View>
   );
 };
 

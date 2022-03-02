@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 import {svgProps} from './SvgComponent';
 
-const Recurring_Bill: React.FC<svgProps> = props => {
+const RecurringBill: React.FC<svgProps> = props => {
   const base_width = 40;
   const base_height = 40;
   const scaleX = props.width / base_width;
@@ -30,4 +30,4 @@ const Recurring_Bill: React.FC<svgProps> = props => {
   );
 };
 
-export default Recurring_Bill;
+export default RecurringBill;

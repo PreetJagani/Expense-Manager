@@ -1,8 +1,8 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import {StyleSheet} from 'react-native';
 
 import MainScreen from './src/screens/MainScreen';
-import 'react-native-gesture-handler';
 
 import {Provider} from 'react-redux';
 import { store } from './src/reducers/Store';

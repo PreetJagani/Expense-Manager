@@ -7,6 +7,8 @@ import {
   ultraLightColorForDarkColor,
 } from '../utils/ColourUtils';
 import SvgComponent, {category} from '../assets/svgs/SvgComponent';
+import {storeCategory} from '../managers/RealmManager';
+import Category from "../models/Category";
 
 type props = {
   visible: boolean;
@@ -14,7 +16,13 @@ type props = {
 };
 
 const AddCategoryDialog: React.FC<props> = props => {
+  const [name, setName] = useState("");
   const [activeColor, setActiveColor] = useState(Color_Violet_Dark);
+
+  const didPressAddButton = () => {
+    props.setVisible(false);
+    storeCategory(new Category('', ''));
+  };
 
   return (
     <View>
@@ -29,7 +37,12 @@ const AddCategoryDialog: React.FC<props> = props => {
             backgroundColor: 'rgba(52, 52, 52, 0.8)',
           }}>
           <Card style={{margin: 16, padding: 16}}>
-            <View style={{flexDirection: 'row', marginBottom: 16, alignItems:'flex-end'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginBottom: 16,
+                alignItems: 'flex-end',
+              }}>
               <View
                 style={{
                   ...styles.avatarBox,
@@ -44,17 +57,19 @@ const AddCategoryDialog: React.FC<props> = props => {
                   tintColor={activeColor}
                 />
               </View>
-              <TextInput style={{flex: 1, marginStart: 8,}} mode="outlined" label={"Name"}/>
+              <TextInput
+                style={{flex: 1, marginStart: 8}}
+                mode="outlined"
+                label={'Name'}
+              />
             </View>
             <ColorPickerBar
               onColorChange={color => {
                 setActiveColor(color);
               }}
             />
-            <Button
-              style={{marginTop: 16}}
-              onPress={() => props.setVisible(false)}>
-              Save
+            <Button style={{marginTop: 16}} onPress={didPressAddButton}>
+              Add
             </Button>
           </Card>
         </View>

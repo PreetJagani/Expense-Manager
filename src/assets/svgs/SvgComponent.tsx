@@ -1,8 +1,8 @@
 import * as React from 'react';
-import Recurring_Bill from './Recurring_Bill';
+import RecurringBill from './RecurringBill';
 import Restaurant from './Restaurant';
-import Shopping_Bag from './Shopping_Bag';
-import Category from './Category';
+import ShoppingBag from './ShoppingBag';
+import Category from './CategorySvg';
 
 export const recurring_bill = 'recurring_bill';
 export const shopping_bag = 'shopping_bag';
@@ -31,10 +31,10 @@ export type svgProps = {
 const SvgComponent: React.FC<prop> = props => {
   switch (props.name) {
     case recurring_bill: {
-      return <Recurring_Bill width={props.width} height={props.height} />;
+      return <RecurringBill width={props.width} height={props.height} />;
     }
     case shopping_bag: {
-      return <Shopping_Bag width={props.width} height={props.height} />;
+      return <ShoppingBag width={props.width} height={props.height} />;
     }
     case restaurant: {
       return <Restaurant width={props.width} height={props.height} />;

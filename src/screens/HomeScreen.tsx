@@ -15,8 +15,8 @@ import {
   EXPENSE_TAG_TYPE,
   EXPENSE_TODAY,
   EXPENSE_WEEK,
-  EXPENSE_YEAR,
-} from '../managers/RealmManager';
+  EXPENSE_YEAR, storeDummyExpense
+} from "../managers/RealmManager";
 
 type props = NativeStackScreenProps<HomeStackParams, 'HomeTab'>;
 
@@ -24,6 +24,8 @@ const HomeScreen: React.FC<props> = props => {
   const expenses = useSelector(
     (state: rootReducerType) => state.expense.expenses,
   );
+
+  // storeDummyExpense();
 
   const navigation = props.navigation;
 
@@ -36,6 +38,7 @@ const HomeScreen: React.FC<props> = props => {
       return (
         <ExpenseCard
           expense={item.item}
+          index={item.index}
           onPress={() => {
             didPressExpenseItem(item.item);
           }}

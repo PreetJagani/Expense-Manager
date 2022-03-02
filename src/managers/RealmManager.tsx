@@ -5,6 +5,12 @@ import Expense, {
   RealmExpenseSchema,
   realmExpenseToExpense,
 } from '../models/Expense';
+import Category, {
+  CATEGORY_DB_NAME,
+  RealmCategory,
+  RealmCategorySchema,
+  realmCategoryToCategory
+} from "../models/Category";
 
 const REALM_DB_PATH: string = 'expenseDB';
 const defaultCompletionBlock = () => {};
@@ -77,6 +83,17 @@ export function deleteExpense(
 
 export function purge() {
   withExpenseRealm(realm => {
+    try {
+      realm.write(() => {
+        realm.deleteAll();
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      realm.close();
+    }
+  });
+  withCategoryRealm(realm => {
     try {
       realm.write(() => {
         realm.deleteAll();
@@ -262,10 +279,84 @@ export function storeDummyExpense() {
   });
 }
 
+//todo Combine all this methods into one, storeRealmObject etc
+export function storeCategory(
+  category: Category,
+  completionBlock: (success: Boolean) => any = defaultCompletionBlock,
+) {
+  withCategoryRealm(realm => {
+    try {
+      realm.write(() => {
+        realm.create(CATEGORY_DB_NAME, category.toRealmCategory());
+        completionBlock(true);
+      });
+    } catch (e) {
+      completionBlock(false);
+      console.log(e);
+    } finally {
+      realm.close();
+    }
+  });
+}
+
+export function getAllCategory(
+  completionBlock: (categories: Array<Category>) => any,
+) {
+  withCategoryRealm(realm => {
+    try {
+      realm.write(() => {
+        const realmCategories: Realm.Results<RealmCategory> =
+          realm.objects(CATEGORY_DB_NAME);
+        const categories: Array<Category> = [];
+        realmCategories.map(category => {
+          categories.push(realmCategoryToCategory(category));
+        });
+        completionBlock(categories);
+      });
+    } catch (e) {
+      completionBlock([]);
+      console.log(e);
+    } finally {
+      realm.close();
+    }
+  });
+}
+
+export function deleteCategory(
+  categoryId: string,
+  completionBlock: (success: Boolean) => any = defaultCompletionBlock,
+) {
+  withCategoryRealm(realm => {
+    try {
+      realm.write(() => {
+        const realmObject = realm.objectForPrimaryKey(
+          CATEGORY_DB_NAME,
+          categoryId,
+        );
+        realm.delete(realmObject);
+      });
+    } catch (e) {
+      completionBlock(false);
+      console.log(e);
+    } finally {
+      realm.close();
+    }
+  });
+}
+
 function withExpenseRealm(taskBlock: (realm: Realm) => any) {
   Realm.open({
     path: REALM_DB_PATH,
     schema: [RealmExpenseSchema],
+  }).then(realm => {
+    taskBlock(realm);
+  });
+}
+
+function withCategoryRealm(taskBlock: (realm: Realm) => any) {
+  Realm.open({
+    path: CATEGORY_DB_NAME,
+    schema: [RealmCategorySchema],
   }).then(realm => {
     taskBlock(realm);
   });

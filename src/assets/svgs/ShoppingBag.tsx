@@ -2,7 +2,7 @@ import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 import {svgProps} from './SvgComponent';
 
-const Shopping_Bag: React.FC<svgProps> = props => {
+const ShoppingBag: React.FC<svgProps> = props => {
   const base_width = 40;
   const base_height = 40;
   const scaleX = props.width / base_width;
@@ -24,4 +24,4 @@ const Shopping_Bag: React.FC<svgProps> = props => {
   );
 };
 
-export default Shopping_Bag;
+export default ShoppingBag;
